@@ -13,9 +13,10 @@ export default function(state = initialState, action) {
         items: action.payload
       };
     case NEW_USER:
-      state.items.push(action.payload)
+      // state.items.push(action.payload)
       return {
-        ...state
+        ...state,
+        items: [...state.items, action.payload]
       };
     case FETCH_USER:
       console.log("reducer");
@@ -31,11 +32,13 @@ export default function(state = initialState, action) {
           ...state,
           };
     case DELETE_USER:
+      console.log("deleted!")
       let newState = state.items.filter(function(user) {return user.id !== action.payload.id});
         return {
           ...state,
         items: newState
           };
+      
     default:
       return state;
   }

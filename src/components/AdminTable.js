@@ -56,27 +56,30 @@ class AdminTable extends Component{
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
               this.props.updateUser(newData)
-              setTimeout(() => {
-                {
-                  const data = this.props.data;
-                  this.setState({ data }, () => resolve());
-                }
-                resolve()
-              }, 2000)
+              resolve()
+              // setTimeout(() => {
+              //   {
+              //     const data = this.props.data;
+              //     this.setState({ data }, () => resolve());
+              //   }
+              //   resolve()
+              // }, 2000)
             }),
           onRowDelete: oldData =>
           new Promise((resolve, reject) => {
               let initialLen = this.props.users.length 
               this.props.deleteUser(oldData)
-              setTimeout(() => {
-                if(initialLen === this.props.users.length){
-                  reject()
-                }
-                else{
-                  let data = this.props.users;
-                  this.setState({ data }, () => resolve());
-                }
-              },2000)
+              console.log("finish")
+              resolve()
+              // setTimeout(() => {
+              //   if(initialLen === this.props.users.length){
+              //     reject()
+              //   }
+              //   else{
+              //     let data = this.props.users;
+              //     this.setState({ data }, () => resolve());
+              //   }
+              // },2000)
             }),
         }}
       />

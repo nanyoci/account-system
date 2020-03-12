@@ -17,8 +17,24 @@ import {authenticateLogin} from '../actions/loginActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router';
+import Image from '../image.png';
+import Chest from '../chest.png';
 
 const styles =theme => ({
+  main: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    height: '1px',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundImage: `url(${Image})`
+    //backgroundImage:
+        //'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
+},
+
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -27,14 +43,17 @@ const styles =theme => ({
     marginTop: theme.spacing(2),
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(18),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor:'white',
+    padding: 15,
+    borderRadius: 20,
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    maxWidth: 50
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -42,8 +61,20 @@ const styles =theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor:"#00C187",
+    outline:0 ,
+    '&:hover': {
+      backgroundColor: '#01AC79',
+    },
+    '&:active': {
+      backgroundColor: '#01AC79',
+    },
+    '&:focus': {
+      outline:0 
+    },
   },
 });
+
 
 class SignIn extends Component {
 
@@ -81,15 +112,12 @@ class SignIn extends Component {
       const { username, password, role} = this.state;
       const { classes } = this.props;
        return (
+        <div
+        className={classes.main}>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
+        <img src= {Chest} className= {classes.avatar} />
         <form className={classes.form} noValidate>
           <TextField
             onChange={this.handleChange}
@@ -142,16 +170,11 @@ class SignIn extends Component {
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-          </Grid>
+
         </form>
       </div>
     </Container>
+    </div>
   );
     }
  
