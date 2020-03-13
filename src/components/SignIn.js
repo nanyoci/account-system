@@ -12,8 +12,8 @@ import {authenticateLogin} from '../actions/loginActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router';
-import LoginBackground from '../Image/loginBackground.png';
-import PokemonIcon from '../Image/pokemonIcon.png';
+import LoginBackground from '../image/loginBackground.png';
+import PokemonIcon from '../image/pokemonIcon.png';
 
 const styles =theme => ({
   main: {
