@@ -1,3 +1,5 @@
+export const API = 'http://172.21.148.167:8080/eduamp/api';
+
 export const FETCH_USERS = 'FETCH_USERS';
 export const FETCH_USER = 'FETCH_USER';
 export const NEW_USER = 'NEW_USER';

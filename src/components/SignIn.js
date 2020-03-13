@@ -1,12 +1,7 @@
 import React, { Component} from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -17,8 +12,8 @@ import {authenticateLogin} from '../actions/loginActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router';
-import Image from '../image.png';
-import Chest from '../chest.png';
+import LoginBackground from '../Image/loginBackground.png';
+import PokemonIcon from '../Image/pokemonIcon.png';
 
 const styles =theme => ({
   main: {
@@ -29,8 +24,8 @@ const styles =theme => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundImage: `url(${Image})`
+    backgroundSize: '100% 120%' ,
+    backgroundImage: `url(${LoginBackground})`,
     //backgroundImage:
         //'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
 },
@@ -117,7 +112,7 @@ class SignIn extends Component {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <img src= {Chest} className= {classes.avatar} />
+        <img src= {PokemonIcon} className= {classes.avatar} alt="Pokemon Icon"/>
         <form className={classes.form} noValidate>
           <TextField
             onChange={this.handleChange}
@@ -155,9 +150,9 @@ class SignIn extends Component {
           onChange={this.handleChange}
           autoWidth
         >
-          <MenuItem value={"STUDENT"}>Student</MenuItem>
-          <MenuItem value={"TEACHER"}>Teacher</MenuItem>
-          <MenuItem value={"ADMIN"}>Admin</MenuItem>
+          <MenuItem value={"ROLE_STUDENT"}>Student</MenuItem>
+          <MenuItem value={"ROLE_TEACHER"}>Teacher</MenuItem>
+          <MenuItem value={"ROLE_ADMIN"}>Admin</MenuItem>
         </Select>
       </FormControl>
           <Button
@@ -184,11 +179,13 @@ SignIn.propTypes = {
   authenticateLogin: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   user:PropTypes.object,
+  access_token:PropTypes.string,
   loginSuccess: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
     user: state.loginReducer.user,
+    accesss_token: state.loginReducer.access_token,
     loginSuccess: state.loginReducer.loginSuccess
   });
 
