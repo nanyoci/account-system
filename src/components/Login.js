@@ -178,13 +178,13 @@ class Login extends Component {
 Login.propTypes = {
   authenticateLogin: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  user:PropTypes.object,
+  currentUser:PropTypes.object,
   access_token:PropTypes.string,
   loginSuccess: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-    user: state.loginReducer.user,
+    currentUser: state.loginReducer.currentUser,
     accesss_token: state.loginReducer.access_token,
     loginSuccess: state.loginReducer.loginSuccess
   });
