@@ -71,7 +71,7 @@ const styles =theme => ({
 });
 
 
-class SignIn extends Component {
+class Login extends Component {
 
   constructor(props){
       super(props);
@@ -175,7 +175,7 @@ class SignIn extends Component {
  
 }
 
-SignIn.propTypes = {
+Login.propTypes = {
   authenticateLogin: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   user:PropTypes.object,
@@ -189,4 +189,4 @@ const mapStateToProps = state => ({
     loginSuccess: state.loginReducer.loginSuccess
   });
 
-export default withRouter(connect(mapStateToProps,{authenticateLogin})(withStyles(styles)(SignIn)));
+export default withRouter(connect(mapStateToProps,{authenticateLogin})(withStyles(styles)(Login)));

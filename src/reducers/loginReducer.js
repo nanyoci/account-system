@@ -1,4 +1,4 @@
-import { AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAIL} from '../actions/types';
+import { AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAIL, AUTH_LOGOUT} from '../actions/types';
 
 const initialState = {
   loginSucess: false,
@@ -15,6 +15,7 @@ export default function(state = initialState, action) {
                 loginSuccess: true,
                 user: action.payload,
                 token: action.access_token
+                //store refresh and access token in localStorage
             }}
         else{
           console.log("no access_token")
@@ -27,7 +28,21 @@ export default function(state = initialState, action) {
                 user:{},
                 loginSuccess: false,
          };
-    default:
+    
+      case AUTH_LOGOUT:
+            return {
+                ...state,
+                loginSuccess: false,
+                user: {},
+                token:''
+                //remove refresh and access token in localStorage
+            }
+        
+        break;
+
+      default:
       return state;
+    
   }
+
 }
