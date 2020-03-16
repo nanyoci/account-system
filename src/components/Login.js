@@ -82,6 +82,12 @@ class Login extends Component {
       }
   }
 
+  componentWillMount(){
+    if(localStorage.getItem('access_token')){
+      this.props.history.push('/');
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     console.log(nextProps)
     if(nextProps.loginSuccess){
@@ -184,9 +190,9 @@ Login.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    currentUser: state.loginReducer.currentUser,
-    accesss_token: state.loginReducer.access_token,
-    loginSuccess: state.loginReducer.loginSuccess
+    currentUser: state.authReducer.currentUser,
+    accesss_token: state.authReducer.access_token,
+    loginSuccess: state.authReducer.loginSuccess
   });
 
 export default withRouter(connect(mapStateToProps,{authenticateLogin})(withStyles(styles)(Login)));

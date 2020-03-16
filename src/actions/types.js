@@ -8,3 +8,4 @@ export const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
 export const AUTH_LOGIN_FAIL = 'AUTH_LOGIN_FAIL';
 export const DELETE_USER = 'DELETE_USER';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+export const REFRESH_TOKEN = 'REFRESH_TOKEN';

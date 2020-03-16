@@ -1,11 +1,11 @@
-import { AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAIL, API } from './types';
+import { REFRESH_TOKEN, API } from './types';
 
-export const authenticateLogin = userData => dispatch =>{
-
+export const refreshToken = ()  => dispatch =>{
+    
+    console.log('fetching new token')
     var formdata = new FormData();
-    formdata.append("username", userData.username);
-    formdata.append("password", userData.password);
-    formdata.append("grant_type", "password");
+    formdata.append("refresh_token", localStorage.getItem("refresh_token"));
+    formdata.append("grant_type", "refresh_token");
 
         fetch(`${API}/oauth/token`, {
             method: 'POST',
@@ -22,13 +22,9 @@ export const authenticateLogin = userData => dispatch =>{
         })
         .then(result => {console.log(result)
           dispatch({
-            type: AUTH_LOGIN_SUCCESS,
+            type: REFRESH_TOKEN,
             payload: result
           })}
-        ).catch(error =>{
-          dispatch({
-          type: AUTH_LOGIN_FAIL,
-          payload: error
-        })});
-    };
+        )
+};
 

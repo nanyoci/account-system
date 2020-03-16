@@ -10,15 +10,18 @@ class AdminTable extends Component{
 
     componentWillMount() {
       //check condition if user has logged in
-        if(!this.props.isLoggedIn){
-          this.props.history.push('/login');
+        // if(!this.props.isLoggedIn){
+        //   this.props.history.push('/login');
+        // }
+        if(!localStorage.getItem('access_token')){
+          this.props.history.push('/');
         }
         this.props.fetchUsers();
       }
     
       componentWillReceiveProps(nextProps) {
-        if(!nextProps.isLoggedIn){
-          this.props.history.push('/login');
+        if(!localStorage.getItem('access_token')){
+          this.props.history.push('/');
         }
         /*if (nextProps.newUser) {
           this.props.users.unshift(nextProps.newUser.data);
@@ -89,7 +92,7 @@ class AdminTable extends Component{
   const mapStateToProps = state => ({
     users: state.adminReducer.items,
     newUser: state.adminReducer.item,
-    isLoggedIn: state.loginReducer.loginSuccess
+    isLoggedIn: state.authReducer.loginSuccess
   });
   
   export default withRouter(connect(mapStateToProps, { fetchUsers, createUser, deleteUser, updateUser })(AdminTable));
