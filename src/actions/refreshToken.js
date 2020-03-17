@@ -1,13 +1,13 @@
 import { REFRESH_TOKEN, API } from './types';
 
-export const refreshToken = ()  => dispatch =>{
+export const refreshToken = ()  => dispatch =>  {
     
     console.log('fetching new token')
     var formdata = new FormData();
     formdata.append("refresh_token", localStorage.getItem("refresh_token"));
     formdata.append("grant_type", "refresh_token");
 
-        fetch(`${API}/oauth/token`, {
+       return fetch(`${API}/oauth/token`, {
             method: 'POST',
             headers: {
             'Authorization': 'Basic bXktY2xpZW50Om15LXNlY3JldA==' //+ btoa('my-client:my-secret')
@@ -21,10 +21,10 @@ export const refreshToken = ()  => dispatch =>{
             return res.json()
         })
         .then(result => {console.log(result)
-          dispatch({
+            dispatch({
             type: REFRESH_TOKEN,
             payload: result
-          })}
-        )
+          })
+        })
 };
 

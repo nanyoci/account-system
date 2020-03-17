@@ -9,11 +9,7 @@ export const  getAccessToken = () => dispatch => {
     let timeDifference = currentTime.getTime() - time_token_acquried.getTime()
     let timeDifferenceInSeconds = timeDifference/1000
     if(timeDifferenceInSeconds >= localStorage.getItem("expires_in") ){
-        dispatch(refreshToken())
-        console.log("refreshed")
-    }
-    else{
-        console.log("not refreshed")
+        dispatch(refreshToken()).then(()=>console.log("Do the fetch here"))
     }
 };
 
