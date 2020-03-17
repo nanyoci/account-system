@@ -40,9 +40,9 @@ export default function(state = initialState, action) {
     
     case AUTH_LOGOUT:
           //remove refresh and access token in localStorage
-          // localStorage.removeItem("access_token" );
-          // localStorage.removeItem("refresh_token");
-          // localStorage.removeItem("expires_in");
+          localStorage.removeItem("access_token" );
+          localStorage.removeItem("refresh_token");
+          localStorage.removeItem("expires_in");
           return {
               ...state,
               loginSuccess: false,
