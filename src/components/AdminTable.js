@@ -4,34 +4,43 @@ import {withRouter} from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers, deleteUser, updateUser, createUser } from '../actions/adminActions';
+import AdminBar from './AdminBar';
 
 class AdminTable extends Component{
 
     componentWillMount() {
+      //check condition if user has logged in
+        // if(!this.props.isLoggedIn){
+        //   this.props.history.push('/login');
+        // }
+        if(!localStorage.getItem('access_token')){
+          this.props.history.push('/');
+        }
         this.props.fetchUsers();
       }
     
       componentWillReceiveProps(nextProps) {
-        console.log(nextProps.users)
+        if(!localStorage.getItem('access_token')){
+          this.props.history.push('/');
+        }
         /*if (nextProps.newUser) {
           this.props.users.unshift(nextProps.newUser.data);
         }*/
       }
 
     render(){return (
+      <div>
+      <AdminBar/>
       <MaterialTable
       title="Welcome Admin"
         columns={[
-          { title: 'ID', field: 'id' , type: 'numeric', editable: 'never' },
-          { title: 'First Name', field: 'first_name' },
-          { title: 'Last Name', field: 'last_name'},
+          { title: 'Name', field: 'name' },
           { title: 'Email', field: 'email'},
-          { title: 'Avatar', field: 'avatar'}
+          { title: 'Role', field: 'role'},
+          { title: 'Password', field: 'pass'}
         ]}
         data    = {this.props.users}
         options={{
-          rowStyle:{ justifyContent: 'flex-start', textAlign: 'justify' } ,
-          actionsColumnIndex: -1
         }}
         editable={{
           onRowAdd: newData =>
@@ -39,7 +48,6 @@ class AdminTable extends Component{
               let initialLen = this.props.users.length
               this.props.createUser(newData)
               setTimeout(() => {
-                {
                   if(initialLen === this.props.users.length){
                     alert("User not added!")
                     reject()
@@ -49,7 +57,6 @@ class AdminTable extends Component{
                     this.setState({ data }, () => resolve())
                     alert("User added!")
                   }
-                }
                 resolve()
               }, 2000)
             }),
@@ -57,32 +64,16 @@ class AdminTable extends Component{
             new Promise((resolve, reject) => {
               this.props.updateUser(newData)
               resolve()
-              // setTimeout(() => {
-              //   {
-              //     const data = this.props.data;
-              //     this.setState({ data }, () => resolve());
-              //   }
-              //   resolve()
-              // }, 2000)
             }),
           onRowDelete: oldData =>
           new Promise((resolve, reject) => {
-              let initialLen = this.props.users.length 
               this.props.deleteUser(oldData)
               console.log("finish")
               resolve()
-              // setTimeout(() => {
-              //   if(initialLen === this.props.users.length){
-              //     reject()
-              //   }
-              //   else{
-              //     let data = this.props.users;
-              //     this.setState({ data }, () => resolve());
-              //   }
-              // },2000)
             }),
         }}
       />
+      </div>
     )}
   }
 
@@ -97,7 +88,8 @@ class AdminTable extends Component{
   
   const mapStateToProps = state => ({
     users: state.adminReducer.items,
-    newUser: state.adminReducer.item
+    newUser: state.adminReducer.item,
+    isLoggedIn: state.authReducer.loginSuccess
   });
   
   export default withRouter(connect(mapStateToProps, { fetchUsers, createUser, deleteUser, updateUser })(AdminTable));

@@ -71,7 +71,7 @@ const styles =theme => ({
 });
 
 
-class SignIn extends Component {
+class Login extends Component {
 
   constructor(props){
       super(props);
@@ -80,6 +80,12 @@ class SignIn extends Component {
           password:'',
           role:'',
       }
+  }
+
+  componentWillMount(){
+    if(localStorage.getItem('access_token')){
+      this.props.history.push('/');
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -175,18 +181,18 @@ class SignIn extends Component {
  
 }
 
-SignIn.propTypes = {
+Login.propTypes = {
   authenticateLogin: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  user:PropTypes.object,
+  currentUser:PropTypes.object,
   access_token:PropTypes.string,
   loginSuccess: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-    user: state.loginReducer.user,
-    accesss_token: state.loginReducer.access_token,
-    loginSuccess: state.loginReducer.loginSuccess
+    currentUser: state.authReducer.currentUser,
+    accesss_token: state.authReducer.access_token,
+    loginSuccess: state.authReducer.loginSuccess
   });
 
-export default withRouter(connect(mapStateToProps,{authenticateLogin})(withStyles(styles)(SignIn)));
+export default withRouter(connect(mapStateToProps,{authenticateLogin})(withStyles(styles)(Login)));
