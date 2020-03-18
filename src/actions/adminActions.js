@@ -1,12 +1,18 @@
-import { FETCH_USERS, NEW_USER, FETCH_USER, DELETE_USER, UPDATE_USER} from './types';
+import { FETCH_USERS, NEW_USER, FETCH_USER, DELETE_USER, UPDATE_USER, API} from './types';
+import store from '../store'
 
 export const fetchUsers = () => dispatch => {
-  fetch('https://reqres.in/api/users')
+  fetch(`${API}/users/`,{
+    method: 'GET',
+    headers:{
+      Authorization: `bearer ${store.getState().authReducer.access_token}`
+    }
+  })
     .then(res => res.json())
     .then(users =>
       dispatch({
         type: FETCH_USERS,
-        payload: users.data
+        payload: users.content
       })
     );
 };
@@ -29,10 +35,12 @@ export const fetchUser = (id) => dispatch => {
 };
 
 export const createUser = newUser => dispatch => {
-  fetch('https://reqres.in/api/users', {
+
+  fetch(`${API}/users/create/`, {
     method: 'POST',
     headers: {
-      'content-type': 'application/json'
+      Authorization: `bearer ${store.getState().authReducer.access_token}`,
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(newUser)
   })

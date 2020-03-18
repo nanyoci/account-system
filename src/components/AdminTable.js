@@ -34,16 +34,13 @@ class AdminTable extends Component{
       <MaterialTable
       title="Welcome Admin"
         columns={[
-          { title: 'ID', field: 'id' , type: 'numeric', editable: 'never' },
-          { title: 'First Name', field: 'first_name' },
-          { title: 'Last Name', field: 'last_name'},
+          { title: 'Name', field: 'name' },
           { title: 'Email', field: 'email'},
-          { title: 'Avatar', field: 'avatar'}
+          { title: 'Role', field: 'role'},
+          { title: 'Password', field: 'pass'}
         ]}
         data    = {this.props.users}
         options={{
-          rowStyle:{ justifyContent: 'flex-start', textAlign: 'justify' } ,
-          actionsColumnIndex: -1
         }}
         editable={{
           onRowAdd: newData =>
