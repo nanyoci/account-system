@@ -70,7 +70,9 @@ const styles =theme => ({
   },
 });
 
-
+/**
+ * This component displays the loginpage for user.
+ */
 class Login extends Component {
 
   constructor(props){
@@ -169,7 +171,7 @@ class Login extends Component {
             className={classes.submit}
             onClick = {this.handleSubmit}
           >
-            Sign In
+            Login
           </Button>
 
         </form>
@@ -182,16 +184,24 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+  /** An action creator for authenticating login */
   authenticateLogin: PropTypes.func.isRequired,
+  /** An object used for styling */
   classes: PropTypes.object.isRequired,
+  /** The currently logged in user */
   currentUser:PropTypes.object,
+  /** Access token of the currently logged in user */
   access_token:PropTypes.string,
+  /** Refresh token of the currently logged in user */
+  refresh_token:PropTypes.string,
+  /** A boolean indicating if login is successful */
   loginSuccess: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
     currentUser: state.authReducer.currentUser,
-    accesss_token: state.authReducer.access_token,
+    access_token: state.authReducer.access_token,
+    refresh_token: state.authReducer.refresh_token,
     loginSuccess: state.authReducer.loginSuccess
   });
 

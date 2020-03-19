@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import { fetchUsers, deleteUser, updateUser, createUser } from '../actions/adminActions';
 import AdminBar from './AdminBar';
 
+/**
+ * This component displays the adminpage for admin. It contains a welcome greeting and list of accounts.
+ */
 class AdminTable extends Component{
 
     componentWillMount() {
@@ -29,7 +32,7 @@ class AdminTable extends Component{
       }
 
     render(){return (
-      <div>
+      <React.Fragment>
       <AdminBar/>
       <MaterialTable
       title="Welcome Admin"
@@ -73,16 +76,22 @@ class AdminTable extends Component{
             }),
         }}
       />
-      </div>
+      </React.Fragment>
     )}
   }
 
   AdminTable.propTypes = {
+    /** An action creator for loading accounts from the server*/
     fetchUsers: PropTypes.func.isRequired,
+    /** An action creator for creating a user account */
     createUser: PropTypes.func.isRequired,
+    /** An action creator for deleting a user account */
     deleteUser: PropTypes.func.isRequired,
+    /** An action creator for updating a user account*/
     updateUser: PropTypes.func.isRequired,
+     /** An array of users objects loaded by the `fetchUsers` action creator */
     users: PropTypes.array.isRequired,
+     /** A user object of updated user*/
     newUser: PropTypes.object
   };
   

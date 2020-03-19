@@ -25,7 +25,9 @@ const useStyles = makeStyles(theme => ({
 
   }));
 
-
+/**
+ * This component displays a bar at the top of the adminpage. It contains a logout button.
+ */
 function AdminBar ({logout}) {
     const classes = useStyles();
     return (<AppBar position="static">
