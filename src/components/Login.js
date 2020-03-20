@@ -8,7 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {authenticateLogin} from '../actions/loginActions';
+import {authenticateLogin, fetchMe} from '../actions/loginActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {withRouter} from 'react-router';
@@ -70,7 +70,9 @@ const styles =theme => ({
   },
 });
 
-
+/**
+ * This component displays the loginpage for user.
+ */
 class Login extends Component {
 
   constructor(props){
@@ -90,11 +92,14 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps)
-    if(nextProps.loginSuccess){
-      console.log("Login Successful")  
-      this.props.history.push('/users');
+    if(nextProps.loginSuccess && Object.keys(this.props.currentUser).length === 0){
+      this.props.fetchMe(nextProps.access_token)
     }
-    else{
+    if(nextProps.loginSuccess && nextProps.currentUser.email){
+      console.log("Login Successful")  
+      this.props.history.push('/')
+    }
+    else if(!nextProps.loginSuccess){
       alert('Login fail');
     }
 
@@ -169,7 +174,7 @@ class Login extends Component {
             className={classes.submit}
             onClick = {this.handleSubmit}
           >
-            Sign In
+            Login
           </Button>
 
         </form>
@@ -182,17 +187,27 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+  /** An action creator for authenticating login */
   authenticateLogin: PropTypes.func.isRequired,
+  /** An action creator for fetching current user */
+  fetchMe: PropTypes.func.isRequired,
+  /** An object used for styling */
   classes: PropTypes.object.isRequired,
+  /** The currently logged in user */
   currentUser:PropTypes.object,
+  /** Access token of the currently logged in user */
   access_token:PropTypes.string,
+  /** Refresh token of the currently logged in user */
+  refresh_token:PropTypes.string,
+  /** A boolean indicating if login is successful */
   loginSuccess: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
     currentUser: state.authReducer.currentUser,
-    accesss_token: state.authReducer.access_token,
+    access_token: state.authReducer.access_token,
+    refresh_token: state.authReducer.refresh_token,
     loginSuccess: state.authReducer.loginSuccess
   });
 
-export default withRouter(connect(mapStateToProps,{authenticateLogin})(withStyles(styles)(Login)));
+export default withRouter(connect(mapStateToProps,{authenticateLogin, fetchMe})(withStyles(styles)(Login)));

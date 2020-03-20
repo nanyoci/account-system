@@ -6,8 +6,11 @@ import { connect } from 'react-redux';
 import { fetchUsers, deleteUser, updateUser, createUser } from '../actions/adminActions';
 import AdminBar from './AdminBar';
 
+/**
+ * This component displays the adminpage for admin. It contains a welcome greeting and list of accounts.
+ */
 class AdminTable extends Component{
-
+  
     componentWillMount() {
       //check condition if user has logged in
         // if(!this.props.isLoggedIn){
@@ -17,6 +20,7 @@ class AdminTable extends Component{
           this.props.history.push('/');
         }
         this.props.fetchUsers();
+        console.log(this.props.currentUser)
       }
     
       componentWillReceiveProps(nextProps) {
@@ -29,7 +33,7 @@ class AdminTable extends Component{
       }
 
     render(){return (
-      <div>
+      <React.Fragment>
       <AdminBar/>
       <MaterialTable
       title="Welcome Admin"
@@ -45,51 +49,47 @@ class AdminTable extends Component{
         editable={{
           onRowAdd: newData =>
             new Promise((resolve, reject) => {
-              let initialLen = this.props.users.length
               this.props.createUser(newData)
-              setTimeout(() => {
-                  if(initialLen === this.props.users.length){
-                    alert("User not added!")
-                    reject()
-                  }
-                  else{
-                    let data = this.props.users;
-                    this.setState({ data }, () => resolve())
-                    alert("User added!")
-                  }
-                resolve()
-              }, 2000)
+              this.setState(this.props.users, () => resolve())
             }),
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
-              this.props.updateUser(newData)
-              resolve()
+              this.props.updateUser(newData, oldData)
+              .then(this.setState(this.props.users, () => resolve()))
             }),
           onRowDelete: oldData =>
           new Promise((resolve, reject) => {
               this.props.deleteUser(oldData)
-              console.log("finish")
-              resolve()
+              .then(this.setState(this.props.users, () => resolve()))
             }),
         }}
       />
-      </div>
+      </React.Fragment>
     )}
   }
 
   AdminTable.propTypes = {
+    /** An action creator for loading accounts from the server*/
     fetchUsers: PropTypes.func.isRequired,
+    /** An action creator for creating a user account */
     createUser: PropTypes.func.isRequired,
+    /** An action creator for deleting a user account */
     deleteUser: PropTypes.func.isRequired,
+    /** An action creator for updating a user account*/
     updateUser: PropTypes.func.isRequired,
+     /** An array of users objects loaded by the `fetchUsers` action creator */
     users: PropTypes.array.isRequired,
-    newUser: PropTypes.object
+     /** A user object of updated user*/
+    newUser: PropTypes.object,
+    
+    currentUser: PropTypes.object
   };
   
   const mapStateToProps = state => ({
     users: state.adminReducer.items,
     newUser: state.adminReducer.item,
-    isLoggedIn: state.authReducer.loginSuccess
+    isLoggedIn: state.authReducer.loginSuccess,
+    currentUser: state.authReducer.currentUser
   });
   
   export default withRouter(connect(mapStateToProps, { fetchUsers, createUser, deleteUser, updateUser })(AdminTable));

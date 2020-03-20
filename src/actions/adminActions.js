@@ -1,87 +1,99 @@
-import { FETCH_USERS, NEW_USER, FETCH_USER, DELETE_USER, UPDATE_USER, API} from './types';
-import store from '../store'
+import { FETCH_USERS, CREATE_USER_FAIL, CREATE_USER_SUCCESS, DELETE_USER_SUCCESS, DELETE_USER_FAIL, UPDATE_USER_SUCCESS, UPDATE_USER_FAIL, API} from './types';
+import {getAccessToken} from '../utils/getAccessToken'
 
 export const fetchUsers = () => dispatch => {
+  return(
   fetch(`${API}/users/`,{
-    method: 'GET',
-    headers:{
-      Authorization: `bearer ${store.getState().authReducer.access_token}`
-    }
-  })
-    .then(res => res.json())
-    .then(users =>
+      method: 'GET',
+      headers:{
+        Authorization: `bearer ${localStorage.getItem("access_token")}`
+      }
+    })
+  .then(res => {if(!res.ok){throw res} return res.json()})
+  .then(users =>
       dispatch({
         type: FETCH_USERS,
         payload: users.content
       })
-    );
+     )
+   )
+  
 };
 
-export const fetchUser = (id) => dispatch => { 
-  fetch(`https://reqres.in/api/users/${id}`, {
-    method: 'GET',
-    headers: {
-      'content-type': 'application/json',
-      'Accept': 'application/json'
-    },
-  })
-    .then(res => res.json())
-    .then(user =>
-      dispatch({
-        type: FETCH_USER,
-        payload: user.data
-      })
-    );
-};
+
 
 export const createUser = newUser => dispatch => {
+  // dispatch(getAccessToken())
 
+  return(
   fetch(`${API}/users/create/`, {
     method: 'POST',
     headers: {
-      Authorization: `bearer ${store.getState().authReducer.access_token}`,
+      Authorization: `bearer ${localStorage.getItem("access_token")}`,
       "Content-Type": "application/json"
     },
     body: JSON.stringify(newUser)
   })
-    .then(res => res.json())
+    .then(res => {if(!res.ok){throw res} return res.json()})
     .then(user => 
       dispatch({
-        type: NEW_USER,
+        type: CREATE_USER_SUCCESS,
         payload: user
-      })
-    );
+      }))
+    .catch(error => 
+      dispatch({
+        type: CREATE_USER_FAIL,
+        payload: error
+      }))
+  )
 };
 
-export const updateUser = newUserData => dispatch => { console.log(newUserData);
-  fetch(`https://reqres.in/api/users/${newUserData.id}`, {
-    method: 'PUT',
+export const updateUser = (newUserData,oldUserData) => dispatch => {
+  return(
+  fetch(`${API}/users/${oldUserData.email}`, {
+    method: 'PATCH',
     headers: {
-      'content-type': 'application/json'
+      Authorization: `bearer ${localStorage.getItem("access_token")}`,
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(newUserData)
   })
-    .then(res => res.json())
+    .then(res => {if(!res.ok){throw res} return res.json()})
     .then(user =>
       dispatch({
-        type: UPDATE_USER,
+        type: UPDATE_USER_SUCCESS,
         payload: user
       })
-    );
+    )
+    .catch(error =>
+      dispatch({
+        type: UPDATE_USER_FAIL,
+        payload: error
+      })
+    )
+  )
 };
 
-export const deleteUser = UserData => dispatch => { console.log(UserData);
-  fetch(`https://reqres.in/api/users/${UserData.id}`, {
-    method: 'GET', /*DELTE*/
+export const deleteUser = UserData => dispatch => { 
+  return(
+  fetch(`${API}/users/${UserData.email}`, {
+    method: 'DELETE',
     headers: {
-      'content-type': 'application/json'
+      Authorization: `bearer ${localStorage.getItem("access_token")}`
     },
   })
-    .then(res => res.json())
-    .then(user =>
+  .then(res => {if(!res.ok){throw res} return res.json()})
+  .then(user =>
       dispatch({
-        type: DELETE_USER,
-        payload: user.data
-      })
-    ).catch((message)=> console.log(message));
+        type: DELETE_USER_SUCCESS,
+        payload: UserData
+      }))
+  .catch(error=> 
+        dispatch({
+        type: DELETE_USER_FAIL,
+        payload: error
+    }))
+  )
 };
+
+

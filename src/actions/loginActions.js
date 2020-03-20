@@ -1,4 +1,4 @@
-import { AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAIL, API } from './types';
+import { AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAIL, API, FETCH_ME } from './types';
 
 export const authenticateLogin = userData => dispatch =>{
 
@@ -20,15 +20,32 @@ export const authenticateLogin = userData => dispatch =>{
             }
             return res.json()
         })
-        .then(result => {console.log(result)
+        .then(result => 
+          // dispatch(fetchMe(result.access_token))
           dispatch({
             type: AUTH_LOGIN_SUCCESS,
             payload: result
-          })}
-        ).catch(error =>{
+          }))
+        .catch(error =>{
           dispatch({
           type: AUTH_LOGIN_FAIL,
           payload: error
         })});
     };
 
+export const fetchMe = access_token => dispatch => { 
+  fetch(`${API}/users/me`, {
+    method: 'POST',
+    headers: {
+      Authorization: `bearer ${access_token}`
+    },
+  })
+    .then(res => res.json())
+    .then(user =>{
+      dispatch({
+        type: FETCH_ME,
+        payload: user
+      })
+    }
+    );
+};

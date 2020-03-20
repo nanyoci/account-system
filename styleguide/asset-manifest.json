@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.js": "/build/main.c4506c3a.js",
+    "runtime-main.js": "/build/bundle.1a15a0bc.js",
+    "build/2.c5d9f877.js": "/build/2.c5d9f877.js",
+    "build/2.c5d9f877.js.LICENSE.txt": "/build/2.c5d9f877.js.LICENSE.txt",
+    "index.html": "/index.html",
+    "precache-manifest.d1d3c1f92f89996d59765fc4af57179f.js": "/precache-manifest.d1d3c1f92f89996d59765fc4af57179f.js",
+    "service-worker.js": "/service-worker.js",
+    "static/media/loginBackground.png": "/static/media/loginBackground.099661ff.png",
+    "static/media/pokemonIcon.png": "/static/media/pokemonIcon.0def0ed7.png"
+  },
+  "entrypoints": [
+    "build/bundle.1a15a0bc.js",
+    "build/2.c5d9f877.js",
+    "build/main.c4506c3a.js"
+  ]
+}
