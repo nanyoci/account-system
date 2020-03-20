@@ -52,7 +52,7 @@ export default function(state = initialState, action) {
               expires_in:0
           }
     case REFRESH_TOKEN:
-      console.log("updating state")
+      console.log("update refresh auth")
       return {
         ...state,
         access_token: action.payload.access_token,

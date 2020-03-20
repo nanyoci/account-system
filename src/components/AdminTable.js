@@ -10,7 +10,7 @@ import AdminBar from './AdminBar';
  * This component displays the adminpage for admin. It contains a welcome greeting and list of accounts.
  */
 class AdminTable extends Component{
-
+  
     componentWillMount() {
       //check condition if user has logged in
         // if(!this.props.isLoggedIn){
@@ -48,20 +48,8 @@ class AdminTable extends Component{
         editable={{
           onRowAdd: newData =>
             new Promise((resolve, reject) => {
-              let initialLen = this.props.users.length
               this.props.createUser(newData)
-              setTimeout(() => {
-                  if(initialLen === this.props.users.length){
-                    alert("User not added!")
-                    reject()
-                  }
-                  else{
-                    let data = this.props.users;
-                    this.setState({ data }, () => resolve())
-                    alert("User added!")
-                  }
-                resolve()
-              }, 2000)
+              this.setState(this.props.users, () => resolve())
             }),
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
@@ -71,8 +59,8 @@ class AdminTable extends Component{
           onRowDelete: oldData =>
           new Promise((resolve, reject) => {
               this.props.deleteUser(oldData)
-              console.log("finish")
-              resolve()
+              .then(this.setState(this.props.users, () => resolve()))
+              // .then(this.setState(this.props.users, () => resolve()))
             }),
         }}
       />
