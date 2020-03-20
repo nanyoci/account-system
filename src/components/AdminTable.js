@@ -20,6 +20,7 @@ class AdminTable extends Component{
           this.props.history.push('/');
         }
         this.props.fetchUsers();
+        console.log(this.props.currentUser)
       }
     
       componentWillReceiveProps(nextProps) {
@@ -53,14 +54,13 @@ class AdminTable extends Component{
             }),
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
-              this.props.updateUser(newData)
-              resolve()
+              this.props.updateUser(newData, oldData)
+              .then(this.setState(this.props.users, () => resolve()))
             }),
           onRowDelete: oldData =>
           new Promise((resolve, reject) => {
               this.props.deleteUser(oldData)
               .then(this.setState(this.props.users, () => resolve()))
-              // .then(this.setState(this.props.users, () => resolve()))
             }),
         }}
       />
@@ -80,13 +80,16 @@ class AdminTable extends Component{
      /** An array of users objects loaded by the `fetchUsers` action creator */
     users: PropTypes.array.isRequired,
      /** A user object of updated user*/
-    newUser: PropTypes.object
+    newUser: PropTypes.object,
+    
+    currentUser: PropTypes.object
   };
   
   const mapStateToProps = state => ({
     users: state.adminReducer.items,
     newUser: state.adminReducer.item,
-    isLoggedIn: state.authReducer.loginSuccess
+    isLoggedIn: state.authReducer.loginSuccess,
+    currentUser: state.authReducer.currentUser
   });
   
   export default withRouter(connect(mapStateToProps, { fetchUsers, createUser, deleteUser, updateUser })(AdminTable));

@@ -1,9 +1,9 @@
-import { AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAIL, AUTH_LOGOUT, REFRESH_TOKEN} from '../actions/types';
+import { AUTH_LOGIN_SUCCESS, AUTH_LOGIN_FAIL, AUTH_LOGOUT, REFRESH_TOKEN, FETCH_ME} from '../actions/types';
 import {getCurrentTime} from '../utils/getCurrentTime';
 
 const initialState = {
   loginSucess: false,
-  currentUser:{},
+  currentUser:'',
   access_token: localStorage.getItem("access_token"),
   refresh_token: localStorage.getItem("refresh_token"),
   expires_in: localStorage.getItem("expires_in"),
@@ -20,21 +20,28 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 loginSuccess: true,
-                currentUser: action.payload,
                 access_token: action.payload.access_token,
                 refresh_token: action.payload.refresh_token,
-                expires_in: 0//action.payload.expires_in
+                expires_in: 0,//action.payload.expires_in
+                time_token_acquired: getCurrentTime()
                 //store refresh and access token in localStorage
             }}
         else{
           alert("successful authentication but no access_token!")
         }
-        break;
+    
+    case FETCH_ME:
+      console.log(action.payload)
+      return {
+        ...state,
+        currentUser: action.payload
+        //store refresh and access token in localStorage
+    }
          
     case AUTH_LOGIN_FAIL:
             return {
               ...state,
-              currentUser:{},
+              currentUser:'',
               loginSuccess: false,
          };
     
@@ -43,14 +50,18 @@ export default function(state = initialState, action) {
           localStorage.removeItem("access_token" );
           localStorage.removeItem("refresh_token");
           localStorage.removeItem("expires_in");
+          localStorage.removeItem("current_user");
+          localStorage.removeItem("time_token_acquired");
           return {
               ...state,
               loginSuccess: false,
-              currentUser: {},
+              currentUser: '',
               access_token:'',
               refresh_token:'',
-              expires_in:0
+              expires_in:0,
+              time_token_acquired:''
           }
+
     case REFRESH_TOKEN:
       console.log("update refresh auth")
       return {

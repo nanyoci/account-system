@@ -1,4 +1,4 @@
-import { FETCH_USERS, CREATE_USER_FAIL, CREATE_USER_SUCCESS, FETCH_USER , UPDATE_USER, DELETE_USER_SUCCESS, DELETE_USER_FAIL} from '../actions/types';
+import { FETCH_USERS, CREATE_USER_FAIL, CREATE_USER_SUCCESS,  UPDATE_USER_SUCCESS, UPDATE_USER_FAIL, DELETE_USER_SUCCESS, DELETE_USER_FAIL} from '../actions/types';
 
 const initialState = {
   items: [],
@@ -26,21 +26,23 @@ export default function(state = initialState, action) {
       return {
         ...state
       };
-    case FETCH_USER:
-      console.log("reducer");
-      console.log(action.payload);
+
+    case UPDATE_USER_SUCCESS:
+        console.log(state.items)
+        const index = state.items.findIndex(user => user.email === action.payload.email)
+        state.items.splice(index, 1, action.payload)
         return {
           ...state,
-          item: action.payload
-        };
-    case UPDATE_USER:
-        let index = state.items.findIndex(user => user.id === action.payload.id);
-        state.items.splice(index, 1, action.payload);
-        return {
-          ...state,
+          items: [...state.items]
           };
+
+    case UPDATE_USER_FAIL:
+      alert("FAIL TO UPDATE USER")
+      return {
+        ...state
+        };
+        
     case DELETE_USER_SUCCESS:
-      console.log("delete users success")
       let newState = state.items.filter(function(user) {return user.email !== action.payload.email});
         return {
           ...state,
